@@ -8,7 +8,7 @@ if (isset($_GET["u"])) {$useraccountid =  $_GET{'u'};}else{$useraccountid = "";}
 $regex = "/[^a-z0-9]/i";
 $useraccountid = preg_replace($regex,"",$useraccountid);
 $result = "";
-if ((strlen($jauthenticate) < 51) && (strlen($useraccountid) < 51) && (strlen($filename) < 51)) 
+if (strlen($useraccountid) < 51)
 {
 	$a = $GryphonStorageAccount;
 	$p = $GryphonStorageProject;
