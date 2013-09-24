@@ -11,35 +11,39 @@ $(document).ready(function() {
 			$('#rememberme').hide();
 		}
 });
-function saveFileDone(filename)
+function saveFileDone(key)
 {
-	if (filename == "test")
+	if (key == "test")
 	{
 		$('#noteSaveBtn').html("Saved &#10004;");
 	}
 
 }
-function appendFileDone(filename)
+function appendFileDone(key)
 {
 
 }
-function loadFileDone(filename,data)
+function loadFileDone(key,data)
 {
-	if (filename == "test")
+	if (key == "test")
 	{
 		document.getElementById("note").value = data;
 		$('#noteSaveBtn').html("Save;");
 	}
 }
-function delFileDone(filename,data)
+function delFileDone(key,data)
 {
-	if (filename == "test")
+	if (key == "test")
 	{
 		document.getElementById("note").value = "";
 		$('#noteSaveBtn').html("Save");
 	}
 }
-function filesDirDone(filename,data)
+function filesDirDone(key,data)
+{
+
+}
+function fileExistsDone(key,data)
 {
 
 }
@@ -92,11 +96,12 @@ function resetPasswordDone(data)
 		resetPasswordError();
 	}
 }
-function saveFileError(filename){}
-function appendFileError(filename){}
-function loadFileError(filename){}
-function delFileError(filename){}
-function filesDirError(filename){}
+function saveFileError(key){}
+function appendFileError(key){}
+function loadFileError(key){}
+function delFileError(key){}
+function filesDirError(key){}
+function fileExistsError(key){}
 function signupError()
 {
 	var html = "<br><br><br><div class='alert alert-danger'>The email you entered is not valid or is already associated with an account.</div>";

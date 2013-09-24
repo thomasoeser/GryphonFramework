@@ -25,7 +25,6 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
 var jAuthenticate = {
     key: function (username,password,salt) 
 	{
@@ -67,8 +66,8 @@ var jAuthenticate = {
 function jAuthenticateSendWith(salt)
 {
 	var ts = new Date().getTime();
-	var username = document.getElementById('username').value.trim();
-	var password = document.getElementById('password').value.trim();
+	var username = $.trim(document.getElementById('username').value);
+	var password = $.trim(document.getElementById('password').value);
 	return jAuthenticateKey.make(username,password,salt);	
 }
 function jAuthenticateRandomNumber()
@@ -90,7 +89,7 @@ function jAuthenticateSplitStringAtInterval (string, interval)
 }
 function jAuthenticateValueOfString(mychar)
 {
-	mychar = mychar + " ";mychar = mychar.trim();
+	mychar = mychar + " ";mychar = $.trim(mychar);
 	var i = 0;
 	var total = "";
 	var total2 = 0;
@@ -103,7 +102,7 @@ function jAuthenticateValueOfString(mychar)
 	i = 0;
 	var total3 = 0;
 	total = total + " ";
-	total = total.trim();
+	total = $.trim(total);
 	while (i < total.length)
 	{
 		total3 = (eval(total3) + eval(total.charAt(i)));
@@ -114,7 +113,7 @@ function jAuthenticateValueOfString(mychar)
 }
 function jAuthenticateValueOfStringTwo(str)
 {
-	str = str + " ";str = str.trim();
+	str = str + " ";str = $.trim(str);
 	var i = 0;
 	var total = "";
 	var total2 = 0;
@@ -127,7 +126,7 @@ function jAuthenticateValueOfStringTwo(str)
 	i = 0;
 	var total3 = 0;
 	total = total + " ";
-	total = total.trim();
+	total = $.trim(total);
 	while (i < total.length)
 	{
 		total3 = (eval(total3) + eval(total.charAt(i)));
@@ -138,7 +137,7 @@ function jAuthenticateValueOfStringTwo(str)
 }
 function jAuthenticateValueOfStringThree(str)
 {
-	str = str + " ";str = str.trim();
+	str = str + " ";str = $.trim(str);
 	var i = 0;
 	var total = "";
 	var total2 = 0;
@@ -151,7 +150,7 @@ function jAuthenticateValueOfStringThree(str)
 	i = 0;
 	var total3 = 0;
 	total = total + " ";
-	total = total.trim();
+	total = $.trim(total);
 	while (i < total.length)
 	{
 		total3 = (eval(total3) + eval(total.charAt(i)));
@@ -425,19 +424,20 @@ function save(filename,data)
 	.done(function(fncdata){
 		if ($.trim(fncdata) == "gs:saved")
 			{
-				saveFileDone(filename);
+				saveFileDone($.trim(filename));
 			}
 		else
 			{
+				jAuthenticateHash = jAuthenticate.key(username,password,days());
 				$.post(webreq, {j: jAuthenticateHash, u: hash, f: filename, data: data })
 				.done(function(fncdata)
 				{
 					if ($.trim(fncdata) == "gs:saved")
 						{
-							saveFileDone(filename);
+							saveFileDone($.trim(filename));
 						}
 					else{
-							saveFileError(filename);
+							saveFileError($.trim(filename));
 						}
 				});
 			}
@@ -455,19 +455,20 @@ function append(filename,data)
 	.done(function(fncdata){
 		if ($.trim(fncdata) == "gs:saved")
 			{
-				appendFileDone(filename);
+				appendFileDone($.trim(filename));
 			}
 		else
 			{
+				jAuthenticateHash = jAuthenticate.key(username,password,days());
 				$.post(webreq, {j: jAuthenticateHash, u: hash, f: filename, m: "a", data: data })
 				.done(function(fncdata)
 				{
 					if ($.trim(fncdata) == "gs:saved")
 						{
-							appendFileDone(filename);
+							appendFileDone($.trim(filename));
 						}
 					else{
-							appendFileError(filename);
+							appendFileError($.trim(filename));
 						}
 				});
 			}
@@ -483,24 +484,29 @@ function load(filename)
 	var webreq = "assets/php/load.php?ts=" + ts;
 		webreq = webreq + "&j=" + jAuthenticateHash;
 		webreq = webreq + "&u=" + hash;
-		webreq = webreq + "&f=" + filename;
+		webreq = webreq + "&f=" + $.trim(filename);
 		$.get(webreq, function(data)
 		{
 					if ($.trim(data) != "gs:error")
 						{
-							loadFileDone(filename, $.trim(data));
+							loadFileDone($.trim(filename), $.trim(data));
 						}
 					else
 						{
+							jAuthenticateHash = jAuthenticate.key(username,password,days());
+							webreq = "assets/php/load.php?ts=" + ts;
+							webreq = webreq + "&j=" + jAuthenticateHash;
+							webreq = webreq + "&u=" + hash;
+							webreq = webreq + "&f=" + $.trim(filename);
 							$.get(webreq, function(data)
 							{
 								if ($.trim(data) != "gs:error")
 									{
-										loadFileDone(filename, $.trim(data));
+										loadFileDone($.trim(filename), $.trim(data));
 									}
 								else
 									{
-										loadFileError(filename);
+										loadFileError($.trim(filename));
 									}
 							});
 						}
@@ -521,19 +527,24 @@ function del(filename)
 		{
 					if ($.trim(data) != "gs:error")
 						{
-							delFileDone(filename, $.trim(data));
+							delFileDone($.trim(filename), $.trim(data));
 						}
 					else
 						{
+							jAuthenticateHash = jAuthenticate.key(username,password,days());
+							webreq = "assets/php/delete.php?ts=" + ts;
+							webreq = webreq + "&j=" + jAuthenticateHash;
+							webreq = webreq + "&u=" + hash;
+							webreq = webreq + "&f=" + filename;
 							$.get(webreq, function(data)
 							{
 								if ($.trim(data) != "gs:error")
 									{
-										delFileDone(filename, $.trim(data));
+										delFileDone($.trim(filename), $.trim(data));
 									}
 								else
 									{
-										delFileError(filename);
+										delFileError($.trim(filename));
 									}
 							});
 						}
@@ -551,7 +562,7 @@ function files(filename)
 		webreq = webreq + "&u=" + hash;
 		if(typeof filename!='undefined')
 			{
-			   webreq = webreq + "&f=" + filename;
+			   webreq = webreq + "&f=" + $.trim(filename);
 			}
 			else
 			{
@@ -561,23 +572,55 @@ function files(filename)
 		{
 			if ($.trim(data) != "gs:error")
 				{
-					filesDirDone(filename, $.trim(data));
+					filesDirDone($.trim(filename), $.trim(data));
 				}
 			else
 				{
+					jAuthenticateHash = jAuthenticate.key(username,password,days());
+					webreq = "assets/php/files.php?ts=" + ts;
+					webreq = webreq + "&j=" + jAuthenticateHash;
+					webreq = webreq + "&u=" + hash;
 					$.get(webreq, function(data)
 					{
 						if ($.trim(data) != "gs:error")
 							{
-								filesDirDone(filename, $.trim(data));
+								filesDirDone($.trim(filename), $.trim(data));
 							}
 						else
 							{
-								filesDirError(filename);
+								filesDirError($.trim(filename));
 							}
 					});
 				}
 		});
+}
+function fileExists(filename)
+{
+	var username = $.trim(document.getElementById('username').value);
+	var password = $.trim(document.getElementById('password').value);
+    if ((IsEmail(username) == true) && (password.length > 0))
+	{
+		var hash = userHash();
+		var ts = new Date().getTime();
+		var webreq = "assets/php/fileexists.php?ts=" + ts;
+			webreq = webreq + "&u=" + hash;
+			webreq = webreq + "&f=" + $.trim(filename);
+			$.get(webreq, function(data)
+			{
+						if ($.trim(data) != "gs:error")
+							{
+								fileExistsDone($.trim(filename),$.trim(data));
+							}
+						else
+							{
+								fileExistsError($.trim(filename));
+							}
+			});
+	}
+	else
+	{
+		fileExistsError($.trim(filename));
+	}
 }
 function signin()
 {
